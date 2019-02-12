@@ -20,6 +20,7 @@ type FileSystem struct {
 func (fs FileSystem) Open(path string) (http.File, error) {
 	f, err := fs.fs.Open(path)
 	if err != nil {
+		// if not found, we assume a virtual path and delagate routing to application
 		f, _ = fs.fs.Open(fmt.Sprintf("/%s", fs.root))
 	}
 
