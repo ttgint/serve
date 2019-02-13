@@ -5,9 +5,6 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-	"strings"
-
-	"github.com/gorilla/mux"
 )
 
 // FileSystem custom file system handler
@@ -20,25 +17,18 @@ type FileSystem struct {
 func (fs FileSystem) Open(path string) (http.File, error) {
 	f, err := fs.fs.Open(path)
 	if err != nil {
-		// if not found, we assume a virtual path and delagate routing to application
-		f, _ = fs.fs.Open(fmt.Sprintf("/%s", fs.root))
-	}
-
-	s, err := f.Stat()
-	if s.IsDir() {
-		index := fmt.Sprintf("%s/%s", strings.TrimSuffix(path, "/"), fs.root)
-		if _, err := fs.fs.Open(index); err != nil {
-			return nil, err
-		}
+		// Rewrite all not-found requests to root (assume a virtual path)
+		return fs.fs.Open(fmt.Sprintf("/%s", fs.root))
 	}
 
 	return f, nil
 }
 
 func main() {
-	port := flag.String("p", "3000", "port to serve on")
-	directory := flag.String("d", ".", "the directory to host")
-	root := flag.String("r", "index.html", "the root (index) file")
+	port := flag.String("l", "3000", "Specify a URI endpoint on which to listen")
+	directory := flag.String("d", ".", "The directory to host")
+	root := flag.String("r", "index.html", "The root (index) file")
+
 	flag.Parse()
 
 	fileServer := http.FileServer(FileSystem{
@@ -46,9 +36,8 @@ func main() {
 		root: *root,
 	})
 
-	r := mux.NewRouter()
-	r.PathPrefix("/").Handler(fileServer)
-	http.Handle("/", r)
+	http.Handle("/", fileServer)
+
 	log.Printf("Serving %s on HTTP port: %s\n", *directory, *port)
 	log.Fatal(http.ListenAndServe(":"+*port, nil))
 }
