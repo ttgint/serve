@@ -8,9 +8,9 @@ Simple server for single page applications.
 $ serve -h
 Usage of serve:
   -d string
-        The directory to host (default ".")
+        The root directory to host (default ".")
   -l string
-        Specify a URI endpoint on which to listen (default "3000")
-  -r string
-        The root (index) file (default "index.html")
+        Specify a URI endpoint on which to listen (default ":3000")
+  -i string
+        The index file (default "index.html")
 ```

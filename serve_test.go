@@ -8,8 +8,8 @@ import (
 
 func TestDefaults(t *testing.T) {
 	handler := http.FileServer(FileSystem{
-		fs:   http.Dir("."),
-		root: "index.html",
+		fs:    http.Dir("."),
+		index: "index.html",
 	})
 
 	req, err := http.NewRequest("GET", "/", nil)
@@ -34,8 +34,8 @@ func TestDefaults(t *testing.T) {
 
 func TestRewrite(t *testing.T) {
 	handler := http.FileServer(FileSystem{
-		fs:   http.Dir("."),
-		root: "index.html",
+		fs:    http.Dir("."),
+		index: "index.html",
 	})
 
 	req, err := http.NewRequest("GET", "/virtual/path", nil)
