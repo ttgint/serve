@@ -14,3 +14,7 @@ Usage of serve:
   -i string
         The index file (default "index.html")
 ```
+
+## Building from source
+
+`$ go build -ldflags="-s -w"`
