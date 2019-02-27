@@ -1,4 +1,6 @@
-# serve [![Build Status](https://travis-ci.org/ttgint/serve.svg?branch=master)](https://travis-ci.org/ttgint/serve)
+# serve 
+
+[![Build Status](https://travis-ci.org/ttgint/serve.svg?branch=master)](https://travis-ci.org/ttgint/serve)
 
 Simple server for single page applications.
 
